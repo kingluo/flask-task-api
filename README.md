@@ -2,8 +2,8 @@
 
 This server program uses flask library to define RESTful APIs
 and jinja2 library to render the http response.
-The tasks is stored in a global dictionary.
-Each new task gets id from an incremental id counter.
+The tasks are stored in a global dictionary variable.
+Each new task gets id from an incremental integer variable.
 The RESTful API uses task id in url to identify the task.
 
 The cli shell script `tasks.sh` uses curl program to access the APIs.
