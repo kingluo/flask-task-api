@@ -13,11 +13,11 @@ class Task:
 
 
 tasks_template = (
-    "{% for task in tasks %}"
+    "{% for task in tasks -%}"
     "{{ '{:<4}'.format(task.id) }} {{ task.expire }} {{ task.desc }}"
-    "{% endfor %}")
+    "{% endfor -%}")
 
-tasks_template = Template(tasks_template, trim_blocks=True, lstrip_blocks=True)
+tasks_template = Template(tasks_template)
 
 logging.basicConfig(
     filename="task.log",
