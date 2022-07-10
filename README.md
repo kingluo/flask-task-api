@@ -21,7 +21,7 @@ pip install -r requirements.txt
 ## Start flask server
 
 ```
-./start_flask.sh
+bash start_flask.sh
 ```
 
 ## test
@@ -34,35 +34,35 @@ pytest
 
 * add task
 
-`./task.sh add <desc> <expiring date>`
+`bash task.sh add <desc> <expiring date>`
 
 * update task
 
-`./task.sh set <id> <desc> <expiring date>`
+`bash task.sh set <id> <desc> <expiring date>`
 
 * get task by id
 
-`./task.sh get <id>`
+`bash task.sh get <id>`
 
 * get all tasks
 
-`./task.sh list`
+`bash task.sh list`
 
 * get all tasks expired today
 
-`./task.sh list --expiring-today`
+`bash task.sh list --expiring-today`
 
 * delete task
 
-`./tasks.sh done <id>`
+`bash tasks.sh done <id>`
 
 Examples:
 
 ```
-./tasks.sh add "hello world" "02/08/2011"
-./tasks.sh set 1 "hello world" "02/08/2011"
-./tasks.sh get 1
-./tasks.sh list --expiring-today
-./tasks.sh list
-./tasks.sh done 1
+bash tasks.sh add "hello world" "02/08/2011"
+bash tasks.sh set 1 "hello world" "02/08/2011"
+bash tasks.sh get 1
+bash tasks.sh list --expiring-today
+bash tasks.sh list
+bash tasks.sh done 1
 ```
