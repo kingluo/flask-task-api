@@ -12,17 +12,19 @@ class Task:
     desc: str
 
 
-tasks_template="""{%- for task in tasks -%}
-{{ '{:<4}'.format(task.id) }} {{ task.expire }} {{ task.desc }}
-{% endfor -%}"""
+tasks_template = (
+    "{% for task in tasks %}"
+    "{{ '{:<4}'.format(task.id) }} {{ task.expire }} {{ task.desc }}"
+    "{% endfor %}")
 
 tasks_template = Template(tasks_template, trim_blocks=True, lstrip_blocks=True)
 
-logging.basicConfig(filename="task.log",
-                    filemode='w',
-                    format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
-                    datefmt='%H:%M:%S',
-                    level=logging.DEBUG)
+logging.basicConfig(
+    filename="task.log",
+    filemode='w',
+    format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+    datefmt='%H:%M:%S',
+    level=logging.DEBUG)
 
 app = Flask(__name__)
 
@@ -40,19 +42,20 @@ def task_post():
         desc = data["desc"]
         expire = data["expire"]
         expire = datetime.strptime(expire, '%d/%m/%Y').date()
+        task = Task(id=next_task_id, expire=expire, desc=desc)
+        tasks[task.id] = task
+        next_task_id += 1
+        logging.info("create task: %s", task)
+        return tasks_template.render(
+            tasks=[task]), 201, text_plain_content_type
     except KeyError:
         return "desc and expire must be provided", 400
     except ValueError:
         return "expire: invalid date format, should be %d/%m/%y", 400
-    task = Task(id=next_task_id, expire=expire, desc=desc)
-    tasks[task.id] = task
-    next_task_id += 1
-    logging.info("create task: %s", task)
-    return tasks_template.render(tasks=[task]), 201, text_plain_content_type
 
 
 @app.get("/tasks")
-def task_get_all(task_id = None):
+def task_get_all(task_id=None):
     global tasks
     expiring_today = request.args.get("expiring_today")
     if expiring_today:
@@ -68,7 +71,7 @@ def task_get_all(task_id = None):
 
 
 @app.get("/task/<int:task_id>")
-def task_get(task_id = None):
+def task_get(task_id=None):
     global tasks
     try:
         task = tasks[task_id]
@@ -92,11 +95,12 @@ def task_put(task_id):
             expire = datetime.strptime(expire, '%d/%m/%Y').date()
             task.expire = expire
         logging.info("update task: %s", task)
+        return tasks_template.render(
+            tasks=[task]), 201, text_plain_content_type
     except KeyError:
         return "task not found", 404
     except ValueError:
         return "expire: invalid date format, should be %d/%m/%y", 400
-    return tasks_template.render(tasks=[task]), 201, text_plain_content_type
 
 
 @app.delete("/task/<int:task_id>")
@@ -106,6 +110,6 @@ def task_delete(task_id):
         task = tasks[task_id]
         logging.info("delete task: %s", task)
         del tasks[task_id]
+        return "", 204
     except KeyError:
         return "task not found", 404
-    return "delete ok", 204

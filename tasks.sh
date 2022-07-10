@@ -4,6 +4,12 @@ case $1 in
     add)
         curl --request POST -s --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode "desc=$2" --data-urlencode "expire=$3" 'http://127.0.0.1:5000/task'
         ;;
+    set)
+        curl --request PUT -s --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode "desc=$3" --data-urlencode "expire=$4" "http://127.0.0.1:5000/task/$2"
+        ;;
+    get)
+        curl --request GET -s "http://127.0.0.1:5000/task/$2"
+        ;;
     done)
         curl --request DELETE -s "http://127.0.0.1:5000/task/$2"
         ;;
