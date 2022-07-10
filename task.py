@@ -13,9 +13,9 @@ class Task:
 
 
 tasks_template = (
-    "{% for task in tasks -%}"
-    "{{ '{:<4}'.format(task.id) }} {{ task.expire }} {{ task.desc }}"
-    "{% endfor -%}")
+    "{% for task in tasks %}"
+    "{{ '{:<4}'.format(task.id) }} {{ task.expire }} {{ task.desc }}\n"
+    "{% endfor %}")
 
 tasks_template = Template(tasks_template)
 
